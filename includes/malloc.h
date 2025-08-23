@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:35:52 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/23 12:06:09 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:08:38 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@
 # define SMALL_UNIT     128
 # define MEDIUM_UNIT    1024
 
-# define DEBUG 0
+# define DEBUG 1
 
+# include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <sys/mman.h>
 
 typedef enum
 {
@@ -29,26 +33,26 @@ typedef enum
 
 typedef struct s_header
 {
-    size_t      size;
-    bool        is_free;
+    size_t              size;
+    bool                is_free;
 
-    t_header*   next;
+    struct s_header*    next;
 }   t_header;
 
 typedef struct s_zone
 {
-    void*       start;
-    void*       end;
-    size_t      block_size;
-    t_header*   allocated_list;
-    t_header*   free_list;
+    void*               start;
+    void*               end;
+    size_t              block_size;
+    struct s_zone*      allocated_list;
+    struct s_zone*      free_list;
 }   t_zone;
 
 typedef struct s_large_zone
 {
-    size_t          size;
-    size_t          r_size;
-    t_large_zone*   next;
+    size_t                  size;
+    size_t                  r_size;
+    struct s_large_zone*    next;
 }   t_large_zone;
 
 typedef struct s_malloc_data
