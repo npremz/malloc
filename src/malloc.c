@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:06:25 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/24 16:50:55 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/24 23:00:55 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,4 @@ void*   ft_malloc(size_t size)
         return handleLargeUnit(size, data);
 
     return (NULL);
-}
-
-int main()
-{
-    void *p = ft_malloc(30);
-	(void)p;
-    return(1);
 }

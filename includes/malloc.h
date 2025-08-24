@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:35:52 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/24 16:30:56 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/24 23:01:32 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_malloc_data
 
     size_t          total_allocated;
 }   t_malloc_data;
+
+void*   ft_malloc(size_t size);
 
 void*   handleSmallUnit(size_t size, t_malloc_data* data);
 void*   handleMediumUnit(size_t size, t_malloc_data* data);

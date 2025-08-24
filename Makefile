@@ -1,19 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::   #
-#    Makefile                                           :+:      :+:    :+:   #
-#                                                     +:+ +:+         +:+     #
-#    By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        #
-#                                                 +#+#+#+#+#+   +#+           #
-#    Created: 2024/01/01 00:00:00 by npremont          #+#    #+#             #
-#    Updated: 2024/01/01 00:00:00 by npremont         ###   ########.fr       #
-#                                                                              #
-# **************************************************************************** #
-
 # Variables
-NAME =		libft_malloc
-CC =		gcc
-CFLAGS =	-Wall -Wextra -Werror -fPIC -g
+NAME =			libft_malloc
+CC =			gcc
+CFLAGS =		-fPIC -g #-Wall -Wextra -Werror
+MAKEFLAGS +=	--no-print-directory
 
 # Check HOSTTYPE
 ifeq ($(HOSTTYPE),)
@@ -52,28 +41,35 @@ $(LIBFT):
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -I$(INCDIR) -I$(LIBFTDIR) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INCDIR) -I$(LIBFTDIR) -c $< -o $@
 
 $(SO_NAME): $(OBJS)
-	$(CC) -shared -o $@ $(OBJS) $(LIBFT)
-	ln -sf $(SO_NAME) $(SYMLINK)
+	@$(CC) -shared -o $@ $(OBJS) $(LIBFT)
+	@ln -sf $(SO_NAME) $(SYMLINK)
+	@echo $(SO_NAME) compiled.
 
 clean:
 	@make -C $(LIBFTDIR) clean
-	rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR)
 
 fclean: clean
 	@make -C $(LIBFTDIR) fclean
-	rm -f $(SO_NAME) $(SYMLINK)
+	@rm -f $(SO_NAME) $(SYMLINK)
 
 re: fclean all
 
 # Test rule (pour tes tests)
 test: all
-	$(CC) $(CFLAGS) -L. -lft_malloc test/test.c -o test/test_malloc
+	@$(CC) $(CFLAGS) -I$(INCDIR) test/main.c -L. -lft_malloc -o test/test_malloc
+	@LD_LIBRARY_PATH=. ./test/test_malloc
+
+info:
+    @echo "HOSTTYPE: $(HOSTTYPE)"
+    @echo "Library: $(SO_NAME)"
+    @echo "Symlink: $(SYMLINK)"
 
 # Debug rule
 debug: CFLAGS += -g -fsanitize=address
 debug: re
 
-.PHONY: all clean fclean re test debug
+.PHONY: all clean fclean re test debug info
