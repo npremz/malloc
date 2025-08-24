@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:06:25 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/23 14:09:14 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:50:55 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_malloc_data*  get_data()
                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
         if (g_data == MAP_FAILED) {
-            perror("mmap failed\n");
+            perror("mmap failed");
             return NULL;
         }
 
@@ -47,12 +47,12 @@ void*   ft_malloc(size_t size)
     if (DEBUG)
         printf("pageSize: %d\n", getpagesize());
 
-    // if (size <= SMALL_UNIT)
-    //     return handleSmallUnit(size, data);
-    // else if (size > SMALL_UNIT && size <= MEDIUM_UNIT)
-    //     return handleMediumUnit(size, data);
-    // else 
-    //     return handleBigUnit(size, data);
+    if (size <= SMALL_UNIT)
+        return handleSmallUnit(size, data);
+    else if (size > SMALL_UNIT && size <= MEDIUM_UNIT)
+        return handleMediumUnit(size, data);
+    else 
+        return handleLargeUnit(size, data);
 
     return (NULL);
 }
@@ -60,5 +60,6 @@ void*   ft_malloc(size_t size)
 int main()
 {
     void *p = ft_malloc(30);
+	(void)p;
     return(1);
 }
