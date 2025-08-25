@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:35:52 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/24 23:01:32 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/25 11:19:26 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
 
-# define SMALL_UNIT     128
-# define MEDIUM_UNIT    1024
-
-# define DEBUG 1
-
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/mman.h>
+
+# define DEBUG 1
+# define SMALL_UNIT     64
+# define MEDIUM_UNIT    1024
+
+# define SMALL_ZONE_SIZE 100 * getpagesize()
 
 typedef enum
 {
