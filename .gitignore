@@ -53,3 +53,6 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+test_malloc
+test_malloc_debug

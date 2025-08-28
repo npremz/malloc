@@ -44,7 +44,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I$(LIBFTDIR) -c $< -o $@
 
 $(SO_NAME): $(OBJS)
-	@$(CC) -shared -o $@ $(OBJS) $(LIBFT)
+	@$(CC) -shared $(LDFLAGS) -o $@ $(OBJS) $(LIBFT)
 	@ln -sf $(SO_NAME) $(SYMLINK)
 	@echo $(SO_NAME) compiled.
 
@@ -63,6 +63,10 @@ test: all
 	@$(CC) $(CFLAGS) -I$(INCDIR) test/main.c -L. -lft_malloc -o test/test_malloc
 	@LD_LIBRARY_PATH=. ./test/test_malloc
 
+test-debug: 
+	@$(CC) -g -fsanitize=address -I$(INCDIR) test/main.c src/*.c $(LIBFT) -o test/test_malloc_debug
+	@./test/test_malloc_debug
+
 info:
     @echo "HOSTTYPE: $(HOSTTYPE)"
     @echo "Library: $(SO_NAME)"
@@ -70,6 +74,7 @@ info:
 
 # Debug rule
 debug: CFLAGS += -g -fsanitize=address
+debug: LDFLAGS += -fsanitize=address
 debug: re
 
 .PHONY: all clean fclean re test debug info

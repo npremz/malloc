@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:35:52 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/25 11:19:26 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/28 14:22:42 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # define SMALL_UNIT     64
 # define MEDIUM_UNIT    1024
 
-# define SMALL_ZONE_SIZE 100 * getpagesize()
-
 typedef enum
 {
     ZONE_SMALL,
@@ -35,7 +33,6 @@ typedef enum
 typedef struct s_header
 {
     size_t              size;
-    bool                is_free;
 
     struct s_header*    next;
 }   t_header;
@@ -45,14 +42,17 @@ typedef struct s_zone
     void*               start;
     void*               end;
     size_t              block_size;
-    struct s_zone*      allocated_list;
-    struct s_zone*      free_list;
+    struct s_header*    allocated_list;
+    struct s_header*    free_list;
+
+    struct s_zone*      next;
 }   t_zone;
 
 typedef struct s_large_zone
 {
     size_t                  size;
     size_t                  r_size;
+    
     struct s_large_zone*    next;
 }   t_large_zone;
 
@@ -70,5 +70,9 @@ void*   ft_malloc(size_t size);
 void*   handleSmallUnit(size_t size, t_malloc_data* data);
 void*   handleMediumUnit(size_t size, t_malloc_data* data);
 void*   handleLargeUnit(size_t size, t_malloc_data* data);
+
+// UTILS
+
+size_t paddedSize(size_t size, size_t round_to);
 
 #endif
