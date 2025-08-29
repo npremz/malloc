@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 23:00:32 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/24 23:04:45 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:32:03 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int main(void)
 {
-    void *p = ft_malloc(30);
-	(void)p;
+    void *a = ft_malloc(30);
+    void *b = ft_malloc(30);
+    void *c = ft_malloc(30);
 
     return (0);
 }

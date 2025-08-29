@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
+/*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:35:52 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/28 14:22:42 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:38:37 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ void*   handleLargeUnit(size_t size, t_malloc_data* data);
 
 // UTILS
 
-size_t paddedSize(size_t size, size_t round_to);
+size_t	paddedSize(size_t size, size_t round_to);
+void	header_add_front(t_header** lst, t_header* new);
+
+t_zone*	zone_lstlast(t_zone *lst);
+void	zone_lstadd_back(t_zone **lst, t_zone *new);
 
 #endif
