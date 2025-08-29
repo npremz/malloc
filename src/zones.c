@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 16:31:19 by npremont          #+#    #+#             */
-/*   Updated: 2025/08/29 14:54:13 by npremont         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:30:17 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,29 @@ static void*	createZone(size_t unit_size)
 void*	getFirstFreeSlot(t_zone	*zone , size_t size, size_t unit)
 {
 	t_header*	free_bloc = NULL;
+	t_header*	free_list_it = NULL;
+	t_header*	free_list_it_prev = NULL;
 	t_zone*		zone_it = zone;
 
 	size_t header_and_padding = paddedSize(sizeof(t_header), 16);
 	size_t bloc_size = header_and_padding + paddedSize(size, 16);
 
 	if (DEBUG)
-		printf("--- Looking for a free slot of size %lu... ---\n", bloc_size);
+		printf("--- Looking for a free slot of size %lu...\n", bloc_size);
 
 	while (zone_it)
 	{
-		t_header**	free_list_it = &zone_it->free_list;
-		while (*free_list_it)
+		free_list_it = zone_it->free_list;
+		while (free_list_it)
 		{
-			if ((*free_list_it)->size >= bloc_size)
+			printf("size: %lu\n", free_list_it->size);
+			if (free_list_it->size >= bloc_size)
 			{
-				free_bloc = *free_list_it;
-				free_list_it += bloc_size;
+				free_bloc = free_list_it;
 				break;
 			}
-			free_list_it = (*free_list_it)->next;
+			free_list_it_prev = free_list_it;
+			free_list_it = free_list_it->next;
 		}
 		if (free_bloc)
 			break;
@@ -84,11 +87,26 @@ void*	getFirstFreeSlot(t_zone	*zone , size_t size, size_t unit)
 	
 		if (free_bloc->size > bloc_size)
 		{
-			free_bloc = free_bloc + bloc_size;
-			printf("%p\n", free_bloc);
+			if (free_list_it_prev)
+			{
+				free_list_it_prev->next = (t_header*)((char*)free_bloc + bloc_size);
+				free_list_it_prev->next->next = free_bloc->next;
+				free_list_it_prev->next->size = free_bloc->size - bloc_size;
+			}
+			else
+			{
+				zone_it->free_list = (t_header*)((char*)free_bloc + bloc_size);
+				zone_it->free_list->next = free_bloc->next;
+				zone_it->free_list->size = free_bloc->size - bloc_size;
+			}
 		}
 		else
-			zone_it->free_list = zone_it->free_list->next;
+		{
+			if (free_list_it_prev)
+				free_list_it_prev->next = free_list_it->next;
+			else
+				zone_it->free_list = free_list_it->next;
+		}
 	}
 	else
 	{
